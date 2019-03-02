@@ -8,6 +8,7 @@ with open('config.yml', 'r') as c:
 
 url = conf['URL']
 port = conf['GROVEPIPORT']
+seconds = conf['SECONDS']
 
 def get_readings():
     [temp, hum] = dht(port, 0)
@@ -26,4 +27,4 @@ while True:
         print('reading posted')
     else:
         print('error porting readings')
-    time.sleep(300)
+    time.sleep(seconds)
