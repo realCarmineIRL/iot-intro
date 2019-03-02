@@ -21,5 +21,9 @@ def post_dweet(url, payload):
     return status
 
 while True:
-    post_dweet(url, get_readings())
+    post = post_dweet(url, get_readings())
+    if post is 200:
+        print('reading posted')
+    else:
+        print('error porting readings')
     time.sleep(300)
