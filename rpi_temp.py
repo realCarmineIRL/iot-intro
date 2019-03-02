@@ -1,13 +1,25 @@
 from grovepi import *
 import time
 import requests
+import yaml
 
-port = 7
+with open('config.yml', 'r') as c:
+    conf = yaml.load(c)
 
-url = "https://dweet.io:443/dweet/for/test1-car-skerries-2019"
+url = conf['URL']
+port = conf['GROVEPIPORT']
+
+def get_readings():
+    [temp, hum] = dht(port, 0)
+    payload = {"temperature": temp, "humidity": hum}
+    return payload
+
+def post_dweet(url, payload):
+    req = requests.post(url, json=payload)
+    status = req.status_code
+    print(req.text)
+    return status
 
 while True:
-    [temp, hum] = dht(port, 0)
-    r = requests.post(url, json={"temperature": temp, "humidity": hum})
-    print(r.text)
-    time.sleep(30)
+    post_dweet(url, get_readings())
+    time.sleep(300)
