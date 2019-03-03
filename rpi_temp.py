@@ -15,6 +15,8 @@ with open('config.yml', 'r') as c:
 url = conf['URL']
 port = conf['GROVEPIPORT']
 seconds = conf['SECONDS']
+device = conf['DEVICE_NAME']
+dweet = conf['DWEET']
 
 def get_readings():
     [temp, hum] = dht(port, 0)
@@ -27,6 +29,13 @@ def post_dweet(url, payload):
     print(req.text)
     return status
 
+def get_dweet(dweet,device):
+    get_url = dweet + device
+    req = requests.get(get_url)
+    print(req.text)
+    status = req.status_code
+    return status
+
 while True:
     readings = get_readings()
     post = post_dweet(url, readings)
@@ -36,13 +45,20 @@ while True:
     else:
         print('error porting readings')
 
-    temperature = SensorData('temperature', readings['temperature'])
-    humidity = SensorData('humidity', readings['humidity'])
-    session.add(temperature)
-    session.add(humidity)
-    session.commit()
-    
+    get_last_reading = get_dweet(dweet, device)
+
+    if get_last_reading is 200:
+        print('dweet retrieved')
+    else:
+        print('error retrieving readings')
+
+    for sensor in readings:
+        sensor_reading = SensorData(sensor, readings[sensor])
+        session.add(sensor_reading)
+        session.commit()
+
     data = session.query(SensorData).all()
     for reading in data:
         print("%s : %s : %s" % (reading.sensor, reading.value, reading.create_date))
+
     time.sleep(seconds)

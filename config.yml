@@ -1,3 +1,5 @@
-URL: https://dweet.io:443/dweet/for/test1-car-skerries-2019
 GROVEPIPORT: 7
 SECONDS: 300
+DEVICE_NAME: test1-car-skerries-2019
+URL: https://dweet.io:443/dweet/for/test1-car-skerries-2019
+DWEET: https://dweet.io:443/get/latest/dweet/for/
