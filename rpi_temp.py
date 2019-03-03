@@ -4,6 +4,7 @@ import requests
 import yaml
 from sensor_db import SensorData
 from base import Session, engine, Base
+import json
 
 Base.metadata.create_all(engine)
 
@@ -33,8 +34,10 @@ def get_dweet(dweet,device):
     get_url = dweet + device
     req = requests.get(get_url)
     print(req.text)
-    status = req.status_code
-    return status
+    res_body = json.loads(req.text)
+    for item in res_body['with']:
+        res = item['content']
+    return res
 
 while True:
     readings = get_readings()
@@ -47,10 +50,10 @@ while True:
 
     get_last_reading = get_dweet(dweet, device)
 
-    if get_last_reading is 200:
+    if get_last_reading:
         print('dweet retrieved')
-        for sensor in readings:
-            sensor_reading = SensorData(sensor, readings[sensor])
+        for sensor in get_last_reading:
+            sensor_reading = SensorData(sensor, get_last_reading[sensor])
             session.add(sensor_reading)
             session.commit()
     else:
