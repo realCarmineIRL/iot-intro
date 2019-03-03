@@ -27,13 +27,11 @@ def get_readings():
 def post_dweet(url, payload):
     req = requests.post(url, json=payload)
     status = req.status_code
-    print(req.text)
     return status
 
 def get_dweet(dweet,device):
     get_url = dweet + device
     req = requests.get(get_url)
-    print(req.text)
     res_body = json.loads(req.text)
     for item in res_body['with']:
         res = item['content']
@@ -51,7 +49,6 @@ while True:
     get_last_reading = get_dweet(dweet, device)
 
     if get_last_reading:
-        print('dweet retrieved')
         for sensor in get_last_reading:
             sensor_reading = SensorData(sensor, get_last_reading[sensor])
             session.add(sensor_reading)
