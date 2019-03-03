@@ -49,13 +49,12 @@ while True:
 
     if get_last_reading is 200:
         print('dweet retrieved')
+        for sensor in readings:
+            sensor_reading = SensorData(sensor, readings[sensor])
+            session.add(sensor_reading)
+            session.commit()
     else:
         print('error retrieving readings')
-
-    for sensor in readings:
-        sensor_reading = SensorData(sensor, readings[sensor])
-        session.add(sensor_reading)
-        session.commit()
 
     data = session.query(SensorData).all()
     for reading in data:
