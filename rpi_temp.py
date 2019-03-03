@@ -56,8 +56,4 @@ while True:
     else:
         print('error retrieving readings')
 
-    data = session.query(SensorData).all()
-    for reading in data:
-        print("%s : %s : %s" % (reading.sensor, reading.value, reading.create_date))
-
     time.sleep(seconds)
