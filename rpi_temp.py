@@ -33,6 +33,7 @@ def get_dweet(dweet,device):
     get_url = dweet + device
     req = requests.get(get_url)
     res_body = json.loads(req.text)
+    print(res_body)
     for item in res_body['with']:
         res = item['content']
     return res
