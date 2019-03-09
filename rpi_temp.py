@@ -14,14 +14,25 @@ with open('config.yml', 'r') as c:
     conf = yaml.load(c)
 
 url = conf['URL']
-port = conf['GROVEPIPORT']
+temp_port = conf['TEMP_PORT']
+#led_port = conf['LED_PORT']
 seconds = conf['SECONDS']
 device = conf['DEVICE_NAME']
 dweet = conf['DWEET']
 
+def get_temp():
+    [temp, hum] = dht(temp_port, 0)
+    temp = {"temperature": temp, "humidity": hum}
+    return temp
+
+'''def get_light():
+    [light] = dht(led_port)
+    led = {"light": light}
+    return led'''
+
 def get_readings():
-    [temp, hum] = dht(port, 0)
-    payload = {"temperature": temp, "humidity": hum}
+    payload = get_temp()
+#    payload = get_light()
     return payload
 
 def post_dweet(url, payload):
@@ -33,7 +44,6 @@ def get_dweet(dweet,device):
     get_url = dweet + device
     req = requests.get(get_url)
     res_body = json.loads(req.text)
-    print(res_body)
     for item in res_body['with']:
         res = item['content']
     return res

@@ -1,0 +1,37 @@
+from flask import Flask, render_template, request
+import pandas as pd
+import pandas_highcharts.core
+from sqlalchemy import create_engine
+import yaml
+
+app = Flask(__name__)
+
+@app.route('/graph')
+def graph():
+    with open('config.yml', 'r') as c:
+        conf = yaml.load(c)
+
+    db_url = conf['DB']
+
+    engine = create_engine(db_url, echo=False)
+    query = ("select cast(value as INTEGER ) temp, sensor, create_date from sensors where sensor = 'temperature' ")
+
+    temp = pd.read_sql(query, engine)
+
+    temp_chart = pandas_highcharts.core.serialize(temp,
+                                          title='Temperature',
+                                          render_to='Temperature',
+                                          output_type='json',
+                                          y=['temp'])
+
+    query = ("select cast(value as INTEGER ) hum, sensor, create_date from sensors where sensor = 'humidity' ")
+
+    hum = pd.read_sql(query, engine)
+
+    hum_chart = pandas_highcharts.core.serialize(hum,
+                                          title='Humidity',
+                                          render_to='Humidity',
+                                          output_type='json',
+                                          y=['hum'])
+
+    return render_template('index.html', temp_chart=temp_chart, hum_chart=hum_chart)
