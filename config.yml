@@ -1,6 +1,6 @@
 TEMP_PORT: 7
-LED_PORT: 4
-SECONDS: 300
+LED_PORT: 3
+SECONDS: 10
 DEVICE_NAME: test1-car-skerries-2019
 URL: https://dweet.io:443/dweet/for/test1-car-skerries-2019
 DWEET: https://dweet.io:443/get/latest/dweet/for/

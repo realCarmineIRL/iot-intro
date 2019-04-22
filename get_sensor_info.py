@@ -15,7 +15,8 @@ with open('config.yml', 'r') as c:
 
 url = conf['URL']
 temp_port = conf['TEMP_PORT']
-#led_port = conf['LED_PORT']
+led_port = conf['LED_PORT']
+pinMode(led_port,"OUTPUT")
 seconds = conf['SECONDS']
 device = conf['DEVICE_NAME']
 dweet = conf['DWEET']
@@ -25,14 +26,19 @@ def get_temp():
     temp = {"temperature": temp, "humidity": hum}
     return temp
 
-'''def get_light():
-    [light] = dht(led_port)
+def get_light():
+    light = digitalRead(led_port)
+    if light:
+        digitalWrite(led_port,0)
+    else:
+        digitalWrite(led_port,1)
     led = {"light": light}
-    return led'''
+    return led
 
 def get_readings():
     payload = get_temp()
-#    payload = get_light()
+    payload.update(get_light())
+    print(payload)
     return payload
 
 def post_dweet(url, payload):

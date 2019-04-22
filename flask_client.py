@@ -34,4 +34,14 @@ def graph():
                                           output_type='json',
                                           y=['hum'])
 
-    return render_template('index.html', temp_chart=temp_chart, hum_chart=hum_chart)
+    query = ("select cast(value as INTEGER ) led, sensor, create_date from sensors where sensor = 'light' ")
+
+    led = pd.read_sql(query, engine)
+
+    led_chart = pandas_highcharts.core.serialize(led,
+                                          title='Light',
+                                          render_to='Light',
+                                          output_type='json',
+                                          y=['led'])
+
+    return render_template('index.html', temp_chart=temp_chart, hum_chart=hum_chart, led_chart=led_chart)
