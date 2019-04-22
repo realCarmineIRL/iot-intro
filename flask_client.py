@@ -14,7 +14,7 @@ def graph():
     db_url = conf['DB']
 
     engine = create_engine(db_url, echo=False)
-    query = ("select cast(value as INTEGER ) temp, sensor, create_date from sensors where sensor = 'temperature' ")
+    query = ("select cast(value as INTEGER ) temp, sensor, create_date from sensors where sensor = 'temperature' order by create_date desc limit 100 ")
 
     temp = pd.read_sql(query, engine)
 
@@ -24,7 +24,7 @@ def graph():
                                           output_type='json',
                                           y=['temp'])
 
-    query = ("select cast(value as INTEGER ) hum, sensor, create_date from sensors where sensor = 'humidity' ")
+    query = ("select cast(value as INTEGER ) hum, sensor, create_date from sensors where sensor = 'humidity' order by create_date desc limit 100 ")
 
     hum = pd.read_sql(query, engine)
 
@@ -34,7 +34,7 @@ def graph():
                                           output_type='json',
                                           y=['hum'])
 
-    query = ("select cast(value as INTEGER ) led, sensor, create_date from sensors where sensor = 'light' ")
+    query = ("select cast(value as INTEGER ) led, sensor, create_date from sensors where sensor = 'light' order by create_date desc limit 100 ")
 
     led = pd.read_sql(query, engine)
 
@@ -44,7 +44,7 @@ def graph():
                                           output_type='json',
                                           y=['led'])
 
-    query = ("select cast(value as INTEGER ) light, sensor, create_date from sensors where sensor = 'light_intensity' ")
+    query = ("select cast(value as INTEGER ) light, sensor, create_date from sensors where sensor = 'light_intensity' order by create_date desc limit 100 ")
 
     light = pd.read_sql(query, engine)
 
