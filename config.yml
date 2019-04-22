@@ -1,7 +1,7 @@
 TEMP_PORT: 7
 LED_PORT: 3
 LIGHT_SENSOR_PORT: 0
-LIGHT_THRESHOLD: 5
+LIGHT_THRESHOLD: 400
 SECONDS: 10
 DEVICE_NAME: test1-car-skerries-2019
 URL: https://dweet.io:443/dweet/for/test1-car-skerries-2019

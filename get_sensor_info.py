@@ -34,12 +34,15 @@ def get_light():
     sensor_value = analogRead(light_sensor)
 
     # Calculate resistance of sensor in K
-    resistance = (float)(1023 - sensor_value) * 10 / sensor_value
+    resistance = (float)(1023 - sensor_value) * 10 / (float)(sensor_value)
 
     if resistance > threshold:
-        led = digitalWrite(led_port,1)
+        digitalWrite(led_port,1)
+        led = 1
     else:
-        led = digitalWrite(led_port,0)
+        digitalWrite(led_port,0)
+        led = 0
+
     light = {"light": led, "light_intensity": resistance}
     return light
 
