@@ -16,7 +16,10 @@ with open('config.yml', 'r') as c:
 url = conf['URL']
 temp_port = conf['TEMP_PORT']
 led_port = conf['LED_PORT']
-pinMode(led_port,"OUTPUT")
+pinMode(led_port, "OUTPUT")
+light_sensor = conf['LIGHT_SENSOR_PORT']
+pinMode(light_sensor, "INPUT")
+threshold = conf['LIGHT_THRESHOLD']
 seconds = conf['SECONDS']
 device = conf['DEVICE_NAME']
 dweet = conf['DWEET']
@@ -27,13 +30,18 @@ def get_temp():
     return temp
 
 def get_light():
-    light = digitalRead(led_port)
-    if light:
-        digitalWrite(led_port,0)
+
+    sensor_value = analogRead(light_sensor)
+
+    # Calculate resistance of sensor in K
+    resistance = (float)(1023 - sensor_value) * 10 / sensor_value
+
+    if resistance > threshold:
+        led = digitalWrite(led_port,1)
     else:
-        digitalWrite(led_port,1)
-    led = {"light": light}
-    return led
+        led = digitalWrite(led_port,0)
+    light = {"light": led, "light_intensity": resistance}
+    return light
 
 def get_readings():
     payload = get_temp()
