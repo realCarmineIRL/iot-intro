@@ -8,6 +8,7 @@ with open('config.yml', 'r') as c:
 
 db_url = conf['DB']
 
+# basic sqlalchemy use.. this will create the db if not exists and will open connections to the db
 engine = create_engine(db_url, echo=False)
 Session = sessionmaker(bind=engine)
 

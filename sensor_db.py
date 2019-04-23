@@ -2,7 +2,7 @@ import datetime
 from sqlalchemy import Column, String, Integer, DateTime
 
 from base import Base
-
+# creating table object using ORM sqlalchemy
 class SensorData(Base):
     __tablename__ = 'sensors'
 
